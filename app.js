@@ -10,7 +10,7 @@ const router = require("./controllers/userLogin")
 app.use(express.json())
 
 conn.on("open",()=>{
-    console.log("connection is sucessfull..")
+    console.log("connection is working ")
 })
 
 

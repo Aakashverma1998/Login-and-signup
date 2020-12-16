@@ -1,22 +1,53 @@
 const router = require("./userSignup")
-// const exprerss = require("express")
 const userdata = require('../models/userschema')
+const jwt = require("jsonwebtoken")
+const bcrypt = require("bcryptjs")
+
+
 router.post("/login", async(req,res)=>{
-    const userLogin = await userdata({
-        email:req.body.email,
-        password: req.body.password
-    })
-    const checkLogin = await userdata.find({email:userLogin.email})
-    const checkPassword = await userdata.find({password:userLogin.password})
-    if(checkLogin[0]){
-        if(checkPassword[0]){
-            res.json({msg:"login sucessfull...."})
-        }else{
-            res.json({msg:"your password is incorrect.."})
-        }
-    }else{
-        res.json({mas:"your email id is incorrect...."})
+    const email = req.body.email
+    const password = req.body.password
+
+    // nasty token mean token is not token is wrapped by content
+    const nastyToken = req.headers['authorization'] 
+    console.log(nastyToken)
+    if (nastyToken) {
+        const token = nastyToken.split(' ')[1] // take out only token from nasty token
+        // checking user is exit or not
+        userdata.findOne({email: email}) 
+            .then(user => {
+                console.log(user)
+                if (user) {
+                    return bcrypt.compare(password,user.password)
+                        .then(isPasswordMatch => {
+                            if (isPasswordMatch) {
+                                jwt.verify(token,"navgurukul",(err,user) => {
+                                    if (user) {
+                                        return res.json({
+                                            user,
+                                            message: 'user successfully logged in..........'
+                                        })
+                                    } else {
+                                        console.log(err)
+                                    }                                   
+                                })
+                            } else {
+                                res.send('Incorrect password.......')
+                            }
+                        })
+                        .catch(err => {
+                            console.log(err)
+                        })
+                }
+                res.send('user not exists')
+            }) 
+            .catch(err => {
+                res.status(500).send('server err')
+            })                 
+    } else {
+        res.send('Unauthorization..')
     }
 })
+
 module.exports = router
 

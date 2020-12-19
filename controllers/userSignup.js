@@ -11,11 +11,8 @@ router.post("/signup",(req,res)=>{
     const password = req.body.password
     const address = req.body.address
     const city = req.body.city
-
-    if (email.length > 8 ) {
-        
-    }
     
+
     userdata.findOne({email: email}) 
         .then(user => {
             if (user) {
@@ -40,7 +37,7 @@ router.post("/signup",(req,res)=>{
                 }) 
                 .catch(err => {
                     res.status(500).send('bcryt error')
-                })         
+                })        
         })    
 })
 

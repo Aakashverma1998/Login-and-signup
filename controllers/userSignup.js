@@ -4,21 +4,22 @@ const userdata = require("../models/userschema")
 const jwt = require("jsonwebtoken")
 const bcrypt = require("bcryptjs")
 
-// dome changes
-router.post("/signup", async(req,res)=>{
+router.post("/signup",(req,res)=>{
     
     const name = req.body.name
     const email = req.body.email
     const password = req.body.password
     const address = req.body.address
     const city = req.body.city
+
+    if (email.length > 8 ) {
+        
+    }
     
     userdata.findOne({email: email}) 
         .then(user => {
             if (user) {
                return res.send('user already exit.....')
-            }else{
-                res.send("message: Invalid Email...")
             }
             bcrypt.hash(password,10)
                 .then(hashedPassword => {
@@ -42,4 +43,5 @@ router.post("/signup", async(req,res)=>{
                 })         
         })    
 })
+
 module.exports = router

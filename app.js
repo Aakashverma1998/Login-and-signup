@@ -1,16 +1,24 @@
-const express = require("express")
-const { JsonWebTokenError } = require("jsonwebtoken")
-const  mongoose = require('mongoose')
-const mongoconnection = ("mongodb://localhost:/students")
+const express = require('express');
+const mongoose = require('mongoose');
+const router = require("./controllers/userLogin");
+
 const app = express()
-mongoose.connect(mongoconnection, {useNewUrlParser:true, useUnifiedTopology: true })
-const conn = mongoose.connection;
-conn.on("open",()=>{
-    console.log("connection is working ")
+app.use(express.json())
+
+app.get('/hi',(req,res) => {
+    res.send('hello world.........')
 })
-const router = require("./controllers/userLogin")
-app.use(express.json())
-app.use("/",router)
-require('./controllers/userLogin')
-app.use(express.json())
-app.listen(4000,()=>console.log(`server is running on port ${4000}`))
+app.use("/route",router)
+
+mongoose.connect('mongodb://localhost/students',{useNewUrlParser:true})
+    .then(() => {
+        console.log('mongodb is connected.......')
+        app.listen(4000,() => {
+            console.log(`server is running on port ${4000}`)
+        })
+    })
+    .catch(err => {
+        console.log(err)
+    })
+
+

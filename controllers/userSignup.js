@@ -4,7 +4,7 @@ const userdata = require("../models/userschema")
 const jwt = require("jsonwebtoken")
 const bcrypt = require("bcryptjs")
 
-
+// dome changes
 router.post("/signup", async(req,res)=>{
     
     const name = req.body.name
@@ -17,6 +17,8 @@ router.post("/signup", async(req,res)=>{
         .then(user => {
             if (user) {
                return res.send('user already exit.....')
+            }else{
+                res.send("message: Invalid Email...")
             }
             bcrypt.hash(password,10)
                 .then(hashedPassword => {

@@ -32,14 +32,14 @@ router.post("/login", async(req,res)=>{
                                     }                                   
                                 })
                             } else {
-                                res.send('Incorrect password.......')
+                                res.send('message:Incorrect password.......')
                             }
                         })
                         .catch(err => {
                             console.log(err)
                         })
                 }
-                res.send('user not exists')
+                res.send('message:Incorrect Email.....')
             }) 
             .catch(err => {
                 res.status(500).send('server err')

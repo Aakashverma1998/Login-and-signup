@@ -6,13 +6,17 @@ const app = express()
 app.use(express.json())
 
 app.use("/route",router)
+app.get("/hi", (req,res)=>{
+    res.send("hello world...")
+})
 
-mongoose.connect('mongodb://localhost/students',{useNewUrlParser:true}, { useUnifiedTopology: true } )
+// conencting to mongodb and listning to port
+mongoose.connect('mongodb://localhost/students', {useNewUrlParser: true},{useUnifiedTopology: true })
     .then(() => {
-        console.log('mongodb is connected.......')
-        app.listen(4000,() => {
-            console.log(`server is running on port ${4000}`)
-        })
+        console.log('mongo db connected...')
+        app.listen(3000, ()=>{
+            console.log('listing through port 3000...')
+        });
     })
     .catch(err => {
         console.log(err)

@@ -15,10 +15,11 @@ router.post("/login", async(req,res)=>{
         const token = nastyToken.split(' ')[1] // take out only token from nasty token
         // checking user is exit or not
         userdata.findOne({email: email}) 
-            .then(user => {
-                console.log(user)
-                if (user) {
-                    return bcrypt.compare(password,user.password)
+            .then(email => {
+                console.log(email)
+                if (email) {
+                    return bcrypt.compare(password,email
+                        .password)
                         .then(isPasswordMatch => {
                             if (isPasswordMatch) {
                                 jwt.verify(token,"navgurukul",(err,user) => {
@@ -42,6 +43,7 @@ router.post("/login", async(req,res)=>{
                 res.send('message:Incorrect Email.....')
             }) 
             .catch(err => {
+                console.log(err)
                 res.status(500).send('server err')
             })                 
     } else {
